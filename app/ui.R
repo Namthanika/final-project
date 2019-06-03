@@ -31,48 +31,46 @@ my_ui <- fluidPage(
   #             min = "2008", max = "2019",
   #             value = "2018")
   
-  sidebarLayout(
-    sidebarPanel(
-      ## If anyone of you wnat to put in global user-controled input, or 
-      ## variable text that will always show to user, put it here.
-    ),
-    
-    mainPanel(
+  # sidebarLayout(
+    # 
+    # sidebarPanel(
+    #   ## If anyone of you wnat to put in global user-controled input, or 
+    #   ## variable text that will always show to user, put it here.
+    # ),
+    #)
       tabsetPanel(
         tabPanel("mapPlot and mapBarPlot",
-          sidebarPanel(selectInput("year", 
-                                   "Year:", 
-                                   choices = listOfYears)
-                       ),
-          mainPanel(
-            plotOutput("mapPlot"),
-            plotOutput("mapBarPlot")
-          )
-        ),
+                 fluidRow(
+                   column(2, #offset = 1,
+                          wellPanel(selectInput("year", 
+                                                   "Year:", 
+                                                   choices = listOfYears)
+                                       )
+                          ),
+                   column(6, plotOutput("mapBarPlot")),
+                   column(4, plotOutput("mapPlot"))
+                   )
+                 ),
         tabPanel("cityBoxplot",
-          sidebarPanel(
-            selectInput("state", 
-                        "State:", 
-                        choices = listOfStates),
-            checkboxGroupInput("bYear", 
-                               "Year:", 
-                               choices = listOfYears,
-                               selected = listOfYears)
-          ),
-          mainPanel(
-            plotOutput("cityBoxplot")
-          )
-        )
+                 fluidRow(
+                   column(10, plotOutput("cityBoxplot")),
+                   column(2,
+                          wellPanel(
+                            selectInput("state", "State:", choices = listOfStates),
+                            checkboxGroupInput("bYear", "Year:", choices = listOfYears,
+                                               selected = listOfYears)
+                            )
+                          )
+                   
+                 )
+                 )
+        ),
+      hr(),
+      div(
+        br(),
+        eval(parse(text = inputCreditedPeople(creditedPeople)))
       )
-    )
-  ),
-  
-  div(
-    br(),
-    hr(),
-    eval(parse(text = inputCreditedPeople(creditedPeople)))
-  )
-  
+      
 )  
 # 
 # shinyUI(my_ui)
