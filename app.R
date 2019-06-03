@@ -3,9 +3,10 @@ library("dplyr")
 
 
 
-source("./app/server.R")
-source("./app/ui.R")
+# source("./app/server.R")
+# source("./app/ui.R")
 
+source("./app/plot.R")
 
 ## to be implement new feture : radial choise: larger map vs larger graph
 
