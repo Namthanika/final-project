@@ -5,9 +5,10 @@ library(ggplot2)
 library(R.utils)
 library(viridis)
 
-setwd(getwd())
+# 
+# setwd(getwd())
 
-source("sales_table_manipulation.R")
+source("./app/sales_table_manipulation.R")
 
 my_server <- function(input, output) {
   ## given a year to look at
@@ -60,5 +61,5 @@ my_server <- function(input, output) {
       geom_boxplot(outlier.colour="red", outlier.shape=8,outlier.size=4) + theme_dark() 
   })
 }
-
-shinyServer(my_server)
+# 
+# shinyServer(my_server)

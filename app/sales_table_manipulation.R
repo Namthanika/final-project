@@ -2,7 +2,7 @@ library("dplyr")
 library("reshape")
 library(fiftystater)
 
-source("project.R")
+source("./app/project.R")
 # to get a table containg the full state name and its abbrevaition
 us_map <- fifty_states
 
@@ -37,7 +37,10 @@ year_state_ave <- monthly_state_ave %>% group_by(stateName, year) %>% summarise(
 ##
 
 ## joining the us_name table and year_state_ave together in order to have latitude and longitude linked to the ave value
-state_abbr_table <- read.csv("../data/states.csv", stringsAsFactors = FALSE)
+
+## moved the following read action to project.R
+# state_abbr_table <- read.csv("../data/states.csv", stringsAsFactors = FALSE)
+
 state_abbr_table <- state_abbr_table %>% mutate(lower_state_name = tolower(State))
 year_state_ave <- inner_join(year_state_ave, state_abbr_table, by = c("stateName" = "Abbreviation"))
 mapping_table <- inner_join(year_state_ave, us_map, by = c("lower_state_name" = "id"))

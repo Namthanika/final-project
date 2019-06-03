@@ -15,7 +15,8 @@ required_packages <- c("data.table", "dplyr", "ggplot2")
 download_and_load_packages(required_packages)
 
 ## fread for faster performance.
-sales <- fread("../data/Sale_Prices_Msa.csv", stringsAsFactors = F)
-zri_forecasts <- fread("../data/ZriForecast_Public.csv", stringsAsFactors = F)
-zhvis <- fread("../data/Metro_Zhvi_Summary_AllHomes.csv", stringsAsFactors = F)
-zris <- fread("../data/Metro_Zri_AllHomesPlusMultifamily_Summary.csv", stringsAsFactors = F)
+sales <- fread("./data/Sale_Prices_Msa.csv", stringsAsFactors = F)
+zri_forecasts <- fread("./data/ZriForecast_Public.csv", stringsAsFactors = F)
+zhvis <- fread("./data/Metro_Zhvi_Summary_AllHomes.csv", stringsAsFactors = F)
+zris <- fread("./data/Metro_Zri_AllHomesPlusMultifamily_Summary.csv", stringsAsFactors = F)
+state_abbr_table <- read.csv("./data/states.csv", stringsAsFactors = FALSE)
