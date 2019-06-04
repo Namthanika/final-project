@@ -43,6 +43,7 @@ my_ui <- navbarPage(fluid = T, "Zillow Housing Data",
     #)
   tabPanel("Home",
            fluidRow(
+             jpeg
              column(7, includeMarkdown("~/info201/final-project/markdown/welcome.md"))
            )
   ), 
