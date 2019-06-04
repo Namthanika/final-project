@@ -10,10 +10,10 @@ Our main audience is home investors - people who either are investing their mone
 either to live or making income from renting a tenant.
 
 ### Questions Answered
-*Have the value of the houses in the specific are been increasing for the past 5 few years? How much has it been increase or decrease?
-*What is the current house value and rent value in certain region?
-*Is there an expected increase in rent value? As a landlord, how much profit he/she will expect to gain over the next year in the region?
-*How the economic growth in the area is correlated to the housing and renting values. We can look into some statistical models to see the relationship between them,
+* Have the value of the houses in the specific are been increasing for the past 5 few years? How much has it been increase or decrease?
+* What is the current house value and rent value in certain region?
+* Is there an expected increase in rent value? As a landlord, how much profit he/she will expect to gain over the next year in the region?
+* How the economic growth in the area is correlated to the housing and renting values. We can look into some statistical models to see the relationship between them,
  i.e. they may have the same increasing or decreasing factor variable.
 
 With our data visualizations and processing, our audience can plan better on their real-estate investment in future.
