@@ -58,6 +58,7 @@ my_server <- function(input, output) {
     filter_data <- get_summarized_data()
     ggplot(data = filter_data,
            aes(x = long, y = lat)) +
+      scale_y_continuous(labels = scales::comma) +
       geom_polygon(aes(group = group, fill = mean), size = 0.1) +
       scale_fill_gradient(low = "blue", high = "yellow") +
       theme(
@@ -72,6 +73,7 @@ my_server <- function(input, output) {
   output$mapBarPlot <- renderPlot({
     data <- barplot_data()
     ggplot(data=data, aes(x=State, y=mean)) +
+      scale_y_continuous(labels = scales::comma) +
       geom_bar(aes(fill = mean) ,stat="identity") + 
       geom_text(aes(label=round(mean)), color="white", size=3.5) + 
       coord_flip() + theme_dark() 
@@ -88,6 +90,7 @@ my_server <- function(input, output) {
 
   output$cityBoxplot <- renderPlot({
    ggplot(box_plot_data(), aes(x = year, y = mean, fill = year)) + 
+      scale_y_continuous(labels = scales::comma) +
       geom_boxplot(outlier.colour="red", outlier.shape=8,outlier.size=4) + theme_dark() 
   })
   
@@ -123,6 +126,7 @@ my_server <- function(input, output) {
   output$plot <- renderPlot({
     data <- cityPrices()
     ggplot(data = data, aes(x = month, y = price)) +
+      scale_y_continuous(labels = scales::comma) +
       geom_bar(stat = "identity", fill = "steelblue") +
       scale_x_discrete(breaks = x_axis_filter) + # this only works for fixed-X-length
       theme(axis.text.x = element_text(angle = 75, hjust = 1))

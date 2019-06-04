@@ -28,7 +28,7 @@ listOfYears <- c("2008", "2009", "2010", "2011", "2012", "2013",
 
 
 ## ======= Actual Shiny UI ======
-my_ui <- navbarPage(fluid = T, "Housing Rate Shiny App",
+my_ui <- navbarPage(fluid = T, "Zillow Housing Data",
                     theme = shinythemes::shinytheme("superhero"),
   # sliderInput("year", "Year:",
   #             min = "2008", max = "2019",
@@ -41,7 +41,11 @@ my_ui <- navbarPage(fluid = T, "Housing Rate Shiny App",
     #   ## variable text that will always show to user, put it here.
     # ),
     #)
-  
+  tabPanel("Home",
+           fluidRow(
+             column(7, includeMarkdown("~/info201/final-project/markdown/welcome.md"))
+           )
+  ), 
   tabPanel("Component 1",
     tabsetPanel(
       tabPanel("mapPlot and mapBarPlot",
@@ -118,5 +122,6 @@ my_ui <- navbarPage(fluid = T, "Housing Rate Shiny App",
   )
       
 )  
+
 # 
 # shinyUI(my_ui)
