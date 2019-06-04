@@ -1,4 +1,4 @@
-![](test.jpg)
+![Hello](test.jpg)
 ## Welcome!
 We will be working on **information related to housing**, i.e. _**the median estimated home
 value cross a given city and states, home listings and sales, rental value, and value forecast**_.
