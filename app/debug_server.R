@@ -13,6 +13,12 @@ library("tidyverse")
 ### =============== Global Envi ============
 source("./app/sales_table_manipulation.R")
 
+citydata <- sales_city(sales_state("NY"), "New York")
+## <!!!\> Explain 4:136  </!!!>
+exp_months <- data.frame(month = colnames(exp_citydata)[4:136], stringsAsFactors = F)
+threes <- seq(3, nrow(exp_months), 3)
+x_axis_filter <- exp_months[threes, ]
+
 # Plot 1: choose city, line graph (shaded) of rent price over the months
 # Plot 2: choose month, choose price range, table of cities and rent price
 
@@ -32,15 +38,8 @@ sales_city <- function(table, city) {
 }
 
 
-exp_citydata <- sales_city(sales_state("NY"), "New York")
-## <!!!\> Explain 4:136  </!!!>
-exp_months <- data.frame(month = colnames(exp_citydata)[4:136], stringsAsFactors = F)
-threes <- seq(3, nrow(exp_months), 3)
-x_axis_filter <- exp_months[threes, ]
-
-
 ### ======== Server Envi ========
-my_server <- function(input, output) {
+debug_server <- function(input, output) {
   ## given a year to look at
   get_summarized_data <- reactive({
     filter(mapping_table, year == input$year) %>% filter(!is.nan(mean))
@@ -55,40 +54,40 @@ my_server <- function(input, output) {
   })
   
   output$mapPlot <- renderPlot({
-    filter_data <- get_summarized_data()
-    ggplot(data = filter_data,
-           aes(x = long, y = lat)) +
-      geom_polygon(aes(group = group, fill = mean), size = 0.1) +
-      scale_fill_gradient(low = "blue", high = "yellow") +
-      theme(
-        # Hide panel borders and remove grid lines
-        panel.border = element_blank(),
-        panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank(), 
-        panel.background = element_rect(fill = "#BFD5E3", colour = "#6D9EC1",
-                                        size = 2, linetype = "solid"))
+    # filter_data <- get_summarized_data()
+    # ggplot(data = filter_data,
+    #        aes(x = long, y = lat)) +
+    #   geom_polygon(aes(group = group, fill = mean), size = 0.1) +
+    #   scale_fill_gradient(low = "blue", high = "yellow") +
+    #   theme(
+    #     # Hide panel borders and remove grid lines
+    #     panel.border = element_blank(),
+    #     panel.grid.major = element_blank(),
+    #     panel.grid.minor = element_blank(), 
+    #     panel.background = element_rect(fill = "#BFD5E3", colour = "#6D9EC1",
+    #                                     size = 2, linetype = "solid"))
   })
   
   output$mapBarPlot <- renderPlot({
-    data <- barplot_data()
-    ggplot(data=data, aes(x=State, y=mean)) +
-      geom_bar(aes(fill = mean) ,stat="identity") + 
-      geom_text(aes(label=round(mean)), color="white", size=3.5) + 
-      coord_flip() + theme_dark() 
+    # data <- barplot_data()
+    # ggplot(data=data, aes(x=State, y=mean)) +
+    #   geom_bar(aes(fill = mean) ,stat="identity") + 
+    #   geom_text(aes(label=round(mean)), color="white", size=3.5) + 
+    #   coord_flip() + theme_dark() 
   })
-
+  
   # ggplot(data = filter_date,
   #        aes(x = long, y = lat)) +
   #   geom_polygon(aes(group = group, fill = mean), size = 0.1) +
   #   scale_fill_gradient(low = "blue", high = "yellow")
-
+  
   ## given at state, to see the trend of the price over the past years
   # monthy_city_ave <- monthly_state_ave %>% group_by(year, cityName, stateName) %>% summarise(mean = mean(value))
   # state_data <- filter(monthy_city_ave, stateName == "CA")
-
+  
   output$cityBoxplot <- renderPlot({
-   ggplot(box_plot_data(), aes(x = year, y = mean, fill = year)) + 
-      geom_boxplot(outlier.colour="red", outlier.shape=8,outlier.size=4) + theme_dark() 
+    # ggplot(box_plot_data(), aes(x = year, y = mean, fill = year)) + 
+    #   geom_boxplot(outlier.colour="red", outlier.shape=8,outlier.size=4) + theme_dark() 
   })
   
   ### ----------- Third and Fourth graph begin --------
@@ -107,7 +106,7 @@ my_server <- function(input, output) {
   })
   
   output$cityData <- renderTable({
-    return(sales_citydata())
+    # return(sales_citydata())
   })
   
   cityPrices <- reactive({
@@ -121,11 +120,11 @@ my_server <- function(input, output) {
   })
   
   output$plot <- renderPlot({
-    data <- cityPrices()
-    ggplot(data = data, aes(x = month, y = price)) +
-      geom_bar(stat = "identity", fill = "steelblue") +
-      scale_x_discrete(breaks = x_axis_filter) + # this only works for fixed-X-length
-      theme(axis.text.x = element_text(angle = 75, hjust = 1))
+    # data <- cityPrices()
+    # ggplot(data = data, aes(x = month, y = price)) +
+    #   geom_bar(stat = "identity", fill = "steelblue") +
+    #   scale_x_discrete(breaks = x_axis_filter) + # this only works for fixed-X-length
+    #   theme(axis.text.x = element_text(angle = 75, hjust = 1))
   })
   ### ----------- Third and Fourth graph ends --------
   

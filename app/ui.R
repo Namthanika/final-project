@@ -25,8 +25,10 @@ listOfYears <- c("2008", "2009", "2010", "2011", "2012", "2013",
                  "2014","2015", "2016","2017","2018","2019")
 
 
+
+
 ## ======= Actual Shiny UI ======
-my_ui <- fluidPage(
+my_ui <- navbarPage(fluid = T, "Housing Rate Shiny App", 
   # sliderInput("year", "Year:",
   #             min = "2008", max = "2019",
   #             value = "2018")
@@ -38,38 +40,81 @@ my_ui <- fluidPage(
     #   ## variable text that will always show to user, put it here.
     # ),
     #)
-      tabsetPanel(
-        tabPanel("mapPlot and mapBarPlot",
-                 fluidRow(
-                   column(2, #offset = 1,
-                          wellPanel(selectInput("year", 
-                                                   "Year:", 
-                                                   choices = listOfYears)
-                                       )
-                          ),
-                   column(6, plotOutput("mapBarPlot")),
-                   column(4, plotOutput("mapPlot"))
-                   )
+  
+  tabPanel("Component 1",
+    tabsetPanel(
+      tabPanel("mapPlot and mapBarPlot",
+               fluidRow(
+                 column(2, #offset = 1,
+                        wellPanel(selectInput("year",
+                                              "Year:",
+                                              choices = listOfYears)
+                        )
                  ),
-        tabPanel("cityBoxplot",
-                 fluidRow(
-                   column(10, plotOutput("cityBoxplot")),
-                   column(2,
-                          wellPanel(
-                            selectInput("state", "State:", choices = listOfStates),
-                            checkboxGroupInput("bYear", "Year:", choices = listOfYears,
-                                               selected = listOfYears)
-                            )
-                          )
-                   
+                 column(10, 
+                        tabsetPanel(
+                          tabPanel("mapBarPlot", plotOutput("mapBarPlot")),
+                          tabPanel("mapPlot", plotOutput("mapPlot"))
+                        )
                  )
+
+                 # column(6, plotOutput("mapBarPlot")),
+                 # column(4, plotOutput("mapPlot"))
+               )
+      ),
+      tabPanel("cityBoxplot",
+               fluidRow(
+                 column(10, plotOutput("cityBoxplot")),
+                 column(2,
+                        wellPanel(
+                          selectInput("state", "State:", choices = listOfStates),
+                          checkboxGroupInput("bYear", "Year:", choices = listOfYears,
+                                             selected = listOfYears)
+                        )
                  )
-        ),
-      hr(),
-      div(
-        br(),
-        eval(parse(text = inputCreditedPeople(creditedPeople)))
+               )
       )
+    )
+  ),
+  
+  tabPanel("Component 2",
+           titlePanel("Home Rent Prices"),
+           tabsetPanel(
+             tabPanel("monthly trend",
+                      fluidRow(
+                        column(2,
+                               wellPanel(
+                                 h3("Plot 1"),
+                                 selectInput('bState', label = "Choose a state", choices = sales$stateName, selected = NULL),
+                                 uiOutput("stateCities")
+                               )
+                              ),
+                        column(10,
+                               plotOutput('plot')
+                               )
+                        )
+                      ),
+             tabPanel("random table",
+                      fluidRow(
+                        column(2,
+                               wellPanel(
+                                 h3("Plot 2"),
+                                 selectInput('month', label = "Choose a month", choices = colnames(sales)[4:136]),
+                                 sliderInput('minPrice', label = "Choose a price range", min = 0, max = 1e+06, value = c(min, max))
+                                 )
+                               ),
+                        column(10,
+                               tableOutput('cityData')
+                               )
+                        )
+                      )
+           )
+  ),
+  hr(),
+  div(
+    br(),
+    eval(parse(text = inputCreditedPeople(creditedPeople)))
+  )
       
 )  
 # 

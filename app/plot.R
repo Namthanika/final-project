@@ -27,13 +27,11 @@ sales_city <- function(table, city) {
   return(sales_cityname)
 }
 
-citydata <- sales_city(sales_state("NY"), "New York")
-
-## <!!!\> Question: where did 4:136 come from? </!!!>
-months <- data.frame(month = colnames(citydata)[4:136], stringsAsFactors = F)
-prices <- data.frame(as.vector(citydata[1, 4:136]), stringsAsFactors = F) %>% gather("key", "value")
-p <- months %>% mutate(price = prices$value)
-View(p)
+exp_citydata <- sales_city(sales_state("NY"), "New York")
+## <!!!\> Explain 4:136  </!!!>
+exp_months <- data.frame(month = colnames(exp_citydata)[4:136], stringsAsFactors = F)
+threes <- seq(3, nrow(exp_months), 3)
+x_axis_filter <- exp_months[threes, ]
 
 # user interface
 my_ui <- fluidPage(   
@@ -86,8 +84,11 @@ my_server <- function(input, output) {
   })
   
   output$plot <- renderPlot({
-    ggplot(data = cityPrices(), aes(x = month, y = price)) +
-      geom_bar(stat = "identity", fill = "steelblue")
+    data <- cityPrices()
+    ggplot(data = data, aes(x = month, y = price)) +
+      geom_bar(stat = "identity", fill = "steelblue") +
+      scale_x_discrete(breaks = x_axis_filter) + # this only works for fixed-X-length
+      theme(axis.text.x = element_text(angle = 75, hjust = 1))
   })
 }
 
