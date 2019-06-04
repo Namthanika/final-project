@@ -1,7 +1,7 @@
 library(shiny)
 library(leaflet)
 library(ggplot2)
-
+library(shinythemes)
 creditedPeople <- c("Thanika Painruttanasukho", "Nathan Truong Nguyen", "Abishek Hariharan", "Yijie Deng")
 
 inputCreditedPeople <- function(creditedPeople) {
@@ -28,7 +28,8 @@ listOfYears <- c("2008", "2009", "2010", "2011", "2012", "2013",
 
 
 ## ======= Actual Shiny UI ======
-my_ui <- navbarPage(fluid = T, "Housing Rate Shiny App", 
+my_ui <- navbarPage(fluid = T, "Housing Rate Shiny App",
+                    theme = shinythemes::shinytheme("superhero"),
   # sliderInput("year", "Year:",
   #             min = "2008", max = "2019",
   #             value = "2018")
