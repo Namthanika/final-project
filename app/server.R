@@ -59,6 +59,8 @@ my_server <- function(input, output) {
     ggplot(data = filter_data,
            aes(x = long, y = lat)) +
       scale_y_continuous(labels = scales::comma) +
+      scale_x_continuous(labels = scales::comma) +
+      
       geom_polygon(aes(group = group, fill = mean), size = 0.1) +
       scale_fill_gradient(low = "blue", high = "yellow") +
       theme(
@@ -74,6 +76,7 @@ my_server <- function(input, output) {
     data <- barplot_data()
     ggplot(data=data, aes(x=State, y=mean)) +
       scale_y_continuous(labels = scales::comma) +
+      
       geom_bar(aes(fill = mean) ,stat="identity") + 
       geom_text(aes(label=round(mean)), color="white", size=3.5) + 
       coord_flip() + theme_dark() 
