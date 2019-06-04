@@ -1,11 +1,11 @@
-##Welcome!
+## Welcome!
 >We will be working on **information related to housing**, i.e. _**the median estimated home
 value cross a given city and states, home listings and sales, rental value, and value forecast**_.
 These dataset are retrieved from the [**Zillow database**](https://www.zillow.com/research/data/).
 Zillow constantly collects and updates that data. Zillow has over 100 million homes in their database
 and creates Zestimate, an estimate of value for each home (based on the “Automated value models”).
 
-###Target Audience
+### Target Audience
 Our main audience is home investors - people who either are investing their money in houses
 either to live or making income from renting a tenant.
 
@@ -38,8 +38,9 @@ Working in a team was hard. It's very difficult to equally split the work and
 give everyone a chance to input their ideas. We tried hardest to include the ideas
 from each team member and implemented them.
 
-##Libraries
+## Libraries
 We used several R libraries to help format the application and wrangle the data:
+
 * **tidyverse** - set of packages that work in harmony because they share common
 data representations and 'API' design.
 * **dplyr** - shortcuts for subsetting, summarizing, rearranging, and joining together
