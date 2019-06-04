@@ -29,6 +29,10 @@ listOfYears <- c("2008", "2009", "2010", "2011", "2012", "2013",
 
 ## ======= Actual Shiny UI ======
 my_ui <- navbarPage(fluid = T, "Housing Rate Shiny App", 
+                    tags$head(
+                      tags$link(rel = "stylesheet", type = "text/css", href = "https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"),
+                      tags$script(src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js")
+                    ),
   # sliderInput("year", "Year:",
   #             min = "2008", max = "2019",
   #             value = "2018")
@@ -53,7 +57,11 @@ my_ui <- navbarPage(fluid = T, "Housing Rate Shiny App",
                  ),
                  column(10, 
                         tabsetPanel(
-                          tabPanel("mapBarPlot", plotOutput("mapBarPlot")),
+                          tabPanel("mapBarPlot", 
+                                   tags$div(class="card-panel teal lighten-2", 
+                                            plotOutput("mapBarPlot")
+                                            )
+                                   ),
                           tabPanel("mapPlot", plotOutput("mapPlot"))
                         )
                  )
