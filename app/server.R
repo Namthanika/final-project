@@ -50,22 +50,17 @@ my_server <- function(input, output) {
     filter(mapping_table, year == input$year | is.na(year))#%>% filter(!is.nan(mean))
   })
   
+  ## get the sale price based on the given year
   barplot_data <- reactive({
     filter(year_state_ave, year == input$year) %>% arrange(mean)
   })
   
+  ## get the sale price based on the given year and state
   box_plot_data <- reactive({
     state_data <- filter(monthy_city_ave, stateName == input$state, year %in% input$bYear) %>% filter(!is.nan(mean))
   })
   
-  # sales_statedata1 <- reactive({
-  #   return(unpivot_sales(input$bState))
-  # })
-  # 
-  # sales_citydata1 <- reactive({
-  #   sales_city <- filter(sales_statedata1(), cityName == input$city)
-  # })
-  
+  ## US heat map based on the housing sale price in the given year
   output$mapPlot <- renderPlot({
     filter_data <- get_summarized_data()
     ggplot(data = filter_data,
@@ -91,6 +86,7 @@ my_server <- function(input, output) {
     paste("The grey states indicate that the data from the states are missing.")
   })
   
+  ## rotated bar plot based on the housing sale price in the given year
   output$mapBarPlot <- renderPlot({
     data <- barplot_data()
     ggplot(data=data, aes(x=State, y=mean)) +
@@ -106,15 +102,7 @@ my_server <- function(input, output) {
       )
   }, bg="transparent")
 
-  # ggplot(data = filter_date,
-  #        aes(x = long, y = lat)) +
-  #   geom_polygon(aes(group = group, fill = mean), size = 0.1) +
-  #   scale_fill_gradient(low = "blue", high = "yellow")
-
-  ## given at state, to see the trend of the price over the past years
-  # monthy_city_ave <- monthly_state_ave %>% group_by(year, cityName, stateName) %>% summarise(mean = mean(value))
-  # state_data <- filter(monthy_city_ave, stateName == "CA")
-
+  ## box plot on the housing sale price based on the given state and year(s)
   output$cityBoxplot <- renderPlot({
    ggplot(box_plot_data(), aes(x = year, y = mean, fill = year)) + 
 
@@ -125,25 +113,8 @@ my_server <- function(input, output) {
             )
   }, bg="transparent")
   
-  # output$citySales <- renderPlot({
-  #   data <- sales_citydata1
-  #   ggplot(data = data, aes(x = variable, y = value)) +
-  #     scale_y_continuous(labels = scales::comma) +
-  #     geom_bar(stat = "identity", fill = "steelblue") +
-  #     scale_x_discrete(breaks = x_axis_filter) + # this only works for fixed-X-length
-  #     theme(axis.text.x = element_text(angle = 75, hjust = 1),
-  #           plot.background = element_rect(fill = "transparent",colour = NA))
-  # })
-    
-  
-  ## third tab::city level
-# =======
-#       scale_y_continuous(labels = scales::comma) +
-#       geom_boxplot(outlier.colour="red", outlier.shape=8,outlier.size=4) + theme_dark() 
-#   })
-# >>>>>>> 85e18180778b1d4ab2ba95bf68e22735d393ed3f
-#   
   ### ----------- Third and Fourth graph begin --------
+  ### ------ plotting the monthly housing rental price in the given city from 2008-2019--------
   sales_statedata <- reactive({
     return(sales_state(input$bState))
   })
@@ -170,7 +141,7 @@ my_server <- function(input, output) {
       mutate(months, price = prices$value)
     )
   })
-
+  ## bar plot on the monthly rental price based on the given state and city
   output$plot <- renderPlot({
     data <- cityPrices()
     ggplot(data = data, aes(x = month, y = price)) +
@@ -180,7 +151,9 @@ my_server <- function(input, output) {
       theme(axis.text.x = element_text(angle = 75, hjust = 1),
             plot.background = element_rect(fill = "transparent",colour = NA))
   }, bg="transparent")
+  ###----end plot--------------------
   
+  ### ------ plotting the monthly housing sale price in the given city from 2008-2019--------
   sales_statedata1 <- reactive({
     filter(unpivot_sales, stateName == input$bState)
   })
@@ -194,12 +167,13 @@ my_server <- function(input, output) {
     data <- sales_citydata1()
     ggplot(data = data, aes(x = variable, y = value)) +
       scale_y_continuous(labels = scales::comma) +
-      geom_bar(stat = "identity", fill = "steelblue") +
+      geom_bar(stat = "identity", fill = "green") +
       scale_x_discrete(breaks = x_axis_filter) + # this only works for fixed-X-length
       theme(axis.text.x = element_text(angle = 75, hjust = 1),
             plot.background = element_rect(fill = "transparent",colour = NA))
   })
-  ### ----------- Third and Fourth graph ends --------
+  ###----end plot--------------------
+  ### ----------- city level --------
 
 }
 
