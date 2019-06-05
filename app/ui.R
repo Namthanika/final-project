@@ -221,12 +221,27 @@ my_ui <- fluidPage(
                                 tags$param("Each bar represents the rental price in the month labeled on the X-axis in the given city. This plot can 
                                              be used to indicate the trend of the rental price very well and represent any rental price trend in each year"),
                                 tags$div(class="card-panel pink lighten-5", 
-                                         plotOutput('plot')),
-                                h4("Monthly Sale Price Bar plot in a Given State and city"),
-                                tags$param("Each bar represents the sale price in the month labeled on the X-axis in the given city. This plot can 
+                                         plotOutput('plot'))
+                                # h4("Monthly Sale Price Bar plot in a Given State and city"),
+                                # tags$param("Each bar represents the sale price in the month labeled on the X-axis in the given city. This plot can 
+                                #              be used to indicate the trend of the sale price very well and represent any sale price trend in each year"),
+                                # tags$div(class="card-panel pink lighten-5",
+                                #          plotOutput('citySales'))
+                              ),
+                              tabsetPanel(
+                                tabPanel("->"),
+                                tabPanel(
+                                  # h4("Monthly Rental Price Bar plot in a Given State and city"),
+                                  # tags$param("Each bar represents the rental price in the month labeled on the X-axis in the given city. This plot can 
+                                  #            be used to indicate the trend of the rental price very well and represent any rental price trend in each year"),
+                                  # tags$div(class="card-panel pink lighten-5", 
+                                  #          plotOutput('plot')),
+                                  h4("Monthly Sale Price Bar plot in a Given State and city"),
+                                  tags$param("Each bar represents the sale price in the month labeled on the X-axis in the given city. This plot can 
                                              be used to indicate the trend of the sale price very well and represent any sale price trend in each year"),
-                                tags$div(class="card-panel pink lighten-5",
-                                         plotOutput('citySales'))
+                                  tags$div(class="card-panel pink lighten-5",
+                                           plotOutput('citySales'))
+                                  )
                               )
                             )
                      )
