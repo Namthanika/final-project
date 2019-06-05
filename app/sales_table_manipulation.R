@@ -67,33 +67,13 @@ mapping_table <- full_join(year_state_ave, us_map, by = c("lower_state_name" = "
 # given a year 
 
 
-sales_state <- function(state) {
-  sales_statename <- filter(sales, stateName == state)
-  return(sales_statename)
-}
 
-getCities <- function(state) {
-  sales_statedata <- sales_state(state)
-  return(sales_statedata$cityName)
-}
-
-sales_city <- function(table, city) {
-  sales_cityname <- filter(table, cityName == city)
-  return(sales_cityname)
-}
-
-
-exp_citydata <- sales_city(sales_state("NY"), "New York")
-## <!!!\> Explain 4:136  </!!!>
-exp_months <- data.frame(month = colnames(exp_citydata)[4:136], stringsAsFactors = F)
-threes <- seq(3, nrow(exp_months), 3)
-x_axis_filter <- exp_months[threes, ]
-
-
-data <- unpivot_sales %>% filter(stateName == "NY", cityName == "New York") 
-ggplot(data = data, aes(x = variable, y = value)) +
-  scale_y_continuous(labels = scales::comma) +
-  geom_bar(stat = "identity", fill = "steelblue") +
-  scale_x_discrete(breaks = x_axis_filter) + # this only works for fixed-X-length
-  theme(axis.text.x = element_text(angle = 75, hjust = 1),
-        plot.background = element_rect(fill = "transparent",colour = NA))
+# 
+# 
+# data <- unpivot_sales %>% filter(stateName == "NY", cityName == "New York") 
+# ggplot(data = data, aes(x = variable, y = value)) +
+#   scale_y_continuous(labels = scales::comma) +
+#   geom_bar(stat = "identity", fill = "steelblue") +
+#   scale_x_discrete(breaks = x_axis_filter) + # this only works for fixed-X-length
+#   theme(axis.text.x = element_text(angle = 75, hjust = 1),
+#         plot.background = element_rect(fill = "transparent",colour = NA))

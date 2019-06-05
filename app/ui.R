@@ -108,14 +108,21 @@ my_ui <- fluidPage(
       div(
         id = "nation", # readme page
         class="card-content col s12 blue",
-        h2("The Housing Price Trend From 2008 to 2019"),
-        div(class="card-panel cyan lighten-3",plotOutput('year_price_plot')),
-        p("The plot represents the average housing price in each year from 2008 to 2019. The data is collected by Zillow. 
+        tabsetPanel(
+          tabPanel("->"),
+          tabPanel(
+            h2("The Housing Price Trend From 2008 to 2019"),
+            div(#class="card-panel cyan lighten-3", 
+              plotOutput('year_price_plot')),
+            p("The plot represents the average housing price in each year from 2008 to 2019. The data is collected by Zillow. 
           It only includes the data from cities in a state. The number of the states is not consistant throughout years.
           The earlier years has less number of states collected in the data set. Since the size of dataset is not consistent throughout the years, 
           The average can be overestimated or underestimated. However, the plot displays the trend of the housing prices 
           from 2008 to 2019 very well. As expected, after the economy has been a lot better after 2012, the trend of housing price 
           also gradually increases in those years.")
+            )
+          )
+        
         ######### === INSERT your README stuff ====
         # tabsetPanel(
         #   tabPanel("Home",
@@ -207,16 +214,22 @@ my_ui <- fluidPage(
                             )
                      ),
                      column(10,
-                            h4("Monthly Rental Price Bar plot in a Given State and city"),
-                            tags$param("Each bar represents the rental price in the month labeled on the X-axis in the given city. This plot can 
-                                         be used to indicate the trend of the rental price very well and represent any rental price trend in each year"),
-                            tags$div(class="card-panel  pink lighten-5", 
-                                     plotOutput('plot')),
-                            h4("Monthly Sale Price Bar plot in a Given State and city"),
-                            tags$param("Each bar represents the sale price in the month labeled on the X-axis in the given city. This plot can 
-                                         be used to indicate the trend of the sale price very well and represent any sale price trend in each year"),
-                            tags$div(plotOutput('citySales'))
+                            tabsetPanel(
+                              tabPanel(
+                                h4("Monthly Rental Price Bar plot in a Given State and city"),
+                                tags$param("Each bar represents the rental price in the month labeled on the X-axis in the given city. This plot can 
+                                             be used to indicate the trend of the rental price very well and represent any rental price trend in each year"),
+                                tags$div(class="card-panel pink lighten-5", 
+                                         plotOutput('plot'))
+                              ),tabPanel(
+                                h4("Monthly Sale Price Bar plot in a Given State and city"),
+                                tags$param("Each bar represents the sale price in the month labeled on the X-axis in the given city. This plot can 
+                                             be used to indicate the trend of the sale price very well and represent any sale price trend in each year"),
+                                tags$div(class="card-panel pink lighten-5",
+                                         plotOutput('citySales'))
+                              )
                             )
+                     )
                      )
                    )
           )

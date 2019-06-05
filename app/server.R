@@ -11,6 +11,28 @@ source("./app/sales_table_manipulation.R")
 # Plot 3: choose city, line graph (shaded) of rent price over the months
 # Plot 4: choose month, choose price range, table of cities and rent price
 
+sales_state <- function(state) {
+  sales_statename <- filter(sales, stateName == state)
+  return(sales_statename)
+}
+
+getCities <- function(state) {
+  sales_statedata <- sales_state(state)
+  return(sales_statedata$cityName)
+}
+
+sales_city <- function(table, city) {
+  sales_cityname <- filter(table, cityName == city)
+  return(sales_cityname)
+}
+
+
+exp_citydata <- sales_city(sales_state("NY"), "New York")
+## <!!!\> Explain 4:136  </!!!>
+exp_months <- data.frame(month = colnames(exp_citydata)[4:136], stringsAsFactors = F)
+threes <- seq(3, nrow(exp_months), 3)
+x_axis_filter <- exp_months[threes, ]
+
 
 ### ======== Server Envi ========
 my_server <- function(input, output) {
