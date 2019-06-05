@@ -8,17 +8,17 @@ library(ggplot2)
 library(R.utils)
 library(viridis)
 library("tidyverse")
-
-download_and_load_packages <- function(required_packages) {
-    repo <- "http://cran.us.r-project.org"
-    for (package in required_packages) {
-        if(!eval(parse(text = paste0("require(", package, ")")))) {
-            install.packages(package, repos = repo)
-        }
-        eval(parse(text = paste0("library(", package, ")")))
-    }
-    
-}
+library("data.table")
+# download_and_load_packages <- function(required_packages) {
+#     repo <- "http://cran.us.r-project.org"
+#     for (package in required_packages) {
+#         if(!eval(parse(text = paste0("require(", package, ")")))) {
+#             install.packages(package, repos = repo)
+#         }
+#         eval(parse(text = paste0("library(", package, ")")))
+#     }
+#     
+# }
 
 ## <!-- add needed packages to this vector --> 
 required_packages <- c("data.table", "dplyr", "ggplot2")
