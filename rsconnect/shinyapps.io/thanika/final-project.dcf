@@ -1,0 +1,12 @@
+name: final-project
+title: final-project
+username:
+account: thanika
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 966351
+bundleId: 2131723
+url: https://thanika.shinyapps.io/final-project/
+when: 1559718757.27162
+asMultiple: FALSE
+asStatic: FALSE

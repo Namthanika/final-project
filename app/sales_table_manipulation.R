@@ -3,6 +3,7 @@ library("reshape")
 library(fiftystater)
 
 source("./app/project.R")
+#source("project.R")
 # to get a table containg the full state name and its abbrevaition
 us_map <- fifty_states
 
@@ -61,8 +62,17 @@ mapping_table <- full_join(year_state_ave, us_map, by = c("lower_state_name" = "
 # p1 +
 #   geom_boxplot(outlier.colour="black", outlier.shape=16,
 #                outlier.size=2) + scale_fill_gradient2(low='red', mid='snow3', high='darkgreen', space='Lab')
-year_price <- year_state_ave %>% filter(stateName == '-' & is.na(State))
-ggplot(data=year_price, aes(x=year, y=mean, group=1)) + 
-  geom_line(colour="red", linetype="solid", size=1.5) + 
-  geom_label(aes(label = round(mean)), size = 2.5) +
-  theme_dark() 
+# year_price <- year_state_ave %>% filter(stateName == '-' & is.na(State))
+# ggplot(data=year_price, aes(x=year, y=mean, group=1)) + 
+#   geom_line(colour="red", linetype="solid", size=1.5) + 
+#   geom_label(aes(label = round(mean)), size = 2.5) +
+#   theme_dark() 
+
+# given a year 
+data <- unpivot_sales %>% filter(stateName == "NY", cityName == "New York") 
+ggplot(data = data, aes(x = variable, y = value)) +
+  scale_y_continuous(labels = scales::comma) +
+  geom_bar(stat = "identity", fill = "steelblue") +
+  scale_x_discrete(breaks = x_axis_filter) + # this only works for fixed-X-length
+  theme(axis.text.x = element_text(angle = 75, hjust = 1),
+        plot.background = element_rect(fill = "transparent",colour = NA))

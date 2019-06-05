@@ -12,7 +12,7 @@ library("tidyverse")
 
 ### =============== Global Envi ============
 source("./app/sales_table_manipulation.R")
-
+#source("sales_table_manipulation.R")
 # Plot 1: choose city, line graph (shaded) of rent price over the months
 # Plot 2: choose month, choose price range, table of cities and rent price
 
@@ -50,16 +50,6 @@ my_server <- function(input, output) {
       theme_dark() 
   })
   
-  output$year_plot_explanation <- renderText({
-    
-    paste("The plot represents the average housing price in each year from 2008 to 2019. The data is collected by Zillow. 
-          It only includes the data from cities in a state. The number of the states is not consistant throughout years.
-          The earlier years has less number of states collected in the data set. Since the size of dataset is not consistent throughout the years, 
-          The average can be overestimated or underestimated. However, the plot displays the trend of the housing prices 
-          from 2008 to 2019 very well. As expected, after the economy has been a lot better after 2012, the trend of housing price 
-          also gradually increases in those years.")
-  })
-  
   ## second tab:: state level 
   get_summarized_data <- reactive({
     filter(mapping_table, year == input$year | is.na(year))#%>% filter(!is.nan(mean))
@@ -70,13 +60,24 @@ my_server <- function(input, output) {
   })
   
   box_plot_data <- reactive({
-    state_data <- filter(monthy_city_ave, stateName == input$state, year %in% input$bYear) #%>% filter(!is.nan(mean))
+    state_data <- filter(monthy_city_ave, stateName == input$state, year %in% input$bYear) %>% filter(!is.nan(mean))
   })
+  
+  # sales_statedata1 <- reactive({
+  #   return(unpivot_sales(input$bState))
+  # })
+  # 
+  # sales_citydata1 <- reactive({
+  #   sales_city <- filter(sales_statedata1(), cityName == input$city)
+  # })
   
   output$mapPlot <- renderPlot({
     filter_data <- get_summarized_data()
     ggplot(data = filter_data,
            aes(x = long, y = lat)) +
+      scale_y_continuous(labels = scales::comma) +
+      scale_x_continuous(labels = scales::comma) +
+      
       geom_polygon(aes(group = group, fill = mean), size = 0.1) +
       scale_fill_gradient(low = "blue", high = "yellow") +
       theme(
@@ -98,6 +99,8 @@ my_server <- function(input, output) {
   output$mapBarPlot <- renderPlot({
     data <- barplot_data()
     ggplot(data=data, aes(x=State, y=mean)) +
+      scale_y_continuous(labels = scales::comma) +
+      
       geom_bar(aes(fill = mean) ,stat="identity") + 
       geom_text(aes(label=round(mean)), color="white", size=3.5) + 
       coord_flip() + theme_dark()+theme(
@@ -119,6 +122,7 @@ my_server <- function(input, output) {
 
   output$cityBoxplot <- renderPlot({
    ggplot(box_plot_data(), aes(x = year, y = mean, fill = year)) + 
+
       geom_boxplot(outlier.colour="red", outlier.shape=8,outlier.size=4) + 
       theme_dark() + 
       theme(legend.background = element_rect(fill = "transparent",colour = NA),
@@ -126,46 +130,82 @@ my_server <- function(input, output) {
             )
   }, bg="transparent")
   
-  ## third tab::city level
+  # output$citySales <- renderPlot({
+  #   data <- sales_citydata1
+  #   ggplot(data = data, aes(x = variable, y = value)) +
+  #     scale_y_continuous(labels = scales::comma) +
+  #     geom_bar(stat = "identity", fill = "steelblue") +
+  #     scale_x_discrete(breaks = x_axis_filter) + # this only works for fixed-X-length
+  #     theme(axis.text.x = element_text(angle = 75, hjust = 1),
+  #           plot.background = element_rect(fill = "transparent",colour = NA))
+  # })
+    
   
+  ## third tab::city level
+# =======
+#       scale_y_continuous(labels = scales::comma) +
+#       geom_boxplot(outlier.colour="red", outlier.shape=8,outlier.size=4) + theme_dark() 
+#   })
+# >>>>>>> 85e18180778b1d4ab2ba95bf68e22735d393ed3f
+#   
   ### ----------- Third and Fourth graph begin --------
   sales_statedata <- reactive({
     return(sales_state(input$bState))
   })
-  
+
   output$stateCities <- renderUI({
     citiesInState <- getCities(input$bState)
     selectInput('city', "Choose city", citiesInState)
   })
-  
+
   sales_citydata <- reactive({
     sales_city <- filter(sales_statedata(), cityName == input$city)
   })
-  
+
   output$cityData <- renderDataTable({
     return(sales_citydata())
   })
-  
+
   cityPrices <- reactive({
     citydata <- sales_citydata()
-    
+
     months <- data.frame(month = colnames(citydata)[4:136], stringsAsFactors = F)
     prices <- data.frame(as.vector(citydata[1, 4:136]), stringsAsFactors = F) %>% gather("key", "value")
     return(
       mutate(months, price = prices$value)
     )
   })
-  
+
   output$plot <- renderPlot({
     data <- cityPrices()
     ggplot(data = data, aes(x = month, y = price)) +
+      scale_y_continuous(labels = scales::comma) +
       geom_bar(stat = "identity", fill = "steelblue") +
       scale_x_discrete(breaks = x_axis_filter) + # this only works for fixed-X-length
-      theme(axis.text.x = element_text(angle = 75, hjust = 1), 
+      theme(axis.text.x = element_text(angle = 75, hjust = 1),
             plot.background = element_rect(fill = "transparent",colour = NA))
   }, bg="transparent")
-  ### ----------- Third and Fourth graph ends --------
   
+  sales_statedata1 <- reactive({
+    filter(unpivot_sales, stateName == input$bState)
+  })
+  
+  sales_citydata1 <- reactive({
+    sales_city <- filter(sales_statedata1(), cityName == input$city)
+  })
+  
+  
+  output$citySales <- renderPlot({
+    data <- sales_citydata1()
+    ggplot(data = data, aes(x = variable, y = value)) +
+      scale_y_continuous(labels = scales::comma) +
+      geom_bar(stat = "identity", fill = "steelblue") +
+      scale_x_discrete(breaks = x_axis_filter) + # this only works for fixed-X-length
+      theme(axis.text.x = element_text(angle = 75, hjust = 1),
+            plot.background = element_rect(fill = "transparent",colour = NA))
+  })
+  ### ----------- Third and Fourth graph ends --------
+
 }
-# 
-# shinyServer(my_server)
+
+shinyServer(my_server)

@@ -1,7 +1,7 @@
 library(shiny)
 library(leaflet)
 library(ggplot2)
-
+library(shinythemes)
 creditedPeople <- c("Thanika Painruttanasukho", "Nathan Truong Nguyen", "Abishek Hariharan", "Yijie Deng")
 
 inputCreditedPeople <- function(creditedPeople) {
@@ -74,15 +74,23 @@ my_ui <- fluidPage(
         class="tabs",
         tags$li(
           class="tab col s3", 
-          tags$a(href="#readme", "Summary")
+          tags$a(href="#readme", "Introduction")
         ),
         tags$li(
           class="tab col s3", 
-          tags$a(href="#page-1", "Details")
+          tags$a(href="#nation", "National Level")
         ),
         tags$li(
           class="tab col s3", 
-          tags$a(href="#page-2", "Trends")
+          tags$a(href="#page-1", "State Level")
+        ),
+        tags$li(
+          class="tab col s3", 
+          tags$a(href="#page-2", "City Level")
+        ),
+        tags$li(
+          class="tab col s3", 
+          tags$a(href="#summary", "Summary")
         )
       ),
       ## <<<<<<< Nav Bar <<<<<
@@ -91,17 +99,45 @@ my_ui <- fluidPage(
       div(
         id = "readme", # readme page
         class="card-content col s12 orange",
-        "About this web application"
-        
-        ######### === INSERT your README stuff ====
+        includeMarkdown("markdown/welcome.md")
+        #includeMarkdown("../markdown/welcome.md")
       ),
       ## <<<<<< Readme Page <<<<<<
+      
+      ## >>>>>> Nation Level Page >>>>>
+      div(
+        id = "nation", # readme page
+        class="card-content col s12 blue",
+        h2("The Housing Price Trend From 2008 to 2019"),
+        div(class="card-panel cyan lighten-3",plotOutput('year_price_plot')),
+        p("The plot represents the average housing price in each year from 2008 to 2019. The data is collected by Zillow. 
+          It only includes the data from cities in a state. The number of the states is not consistant throughout years.
+          The earlier years has less number of states collected in the data set. Since the size of dataset is not consistent throughout the years, 
+          The average can be overestimated or underestimated. However, the plot displays the trend of the housing prices 
+          from 2008 to 2019 very well. As expected, after the economy has been a lot better after 2012, the trend of housing price 
+          also gradually increases in those years.")
+        ######### === INSERT your README stuff ====
+        # tabsetPanel(
+        #   tabPanel("Home",
+        #            fluidRow(
+        #              column(7, includeMarkdown("~/info201/final-project/markdown/welcome.md"))
+        #            )
+        #   ), 
+        #   
+        #   tabPanel("Conclusion",
+        #            fluidRow(
+        #              column(7, includeMarkdown("~/info201/final-project/markdown/conclusion.md"))
+        #            )
+        #   )
+        # )
+      ),
+      ## <<<<<< Nation Level Page <<<<<<
       
       ## >>>>>> First Page >>>>>
       div(
         id = "page-1", # first page
         class="card-content col s12 blue",
-        h3("Title #1"),
+        h3("Housing Price in Each State"),
         tabsetPanel(
           tabPanel("Overview",
                    fluidRow(
@@ -112,15 +148,22 @@ my_ui <- fluidPage(
                             ),
                      column(10, 
                             tabsetPanel(
-                              tabPanel("Rents on Map", 
+                              tabPanel("Sales Map", 
+                                       tags$h3("Sale Map in the United States"),
+                                       tags$param("The color on the map indicates how expensive the housing price in each state is.
+                                               As show on the color scale on the right, yellow state sale the most expensive price and
+                                                  dark blue state is the cheapest price. The grey states indicate that the data is missing."),
                                        tags$div(class="card-panel cyan lighten-3", 
                                                 plotOutput("mapPlot")
                                                 )
                                        ),
-                              tabPanel("States Bar Plot", 
+                              tabPanel("Sale Price in Each State",
+                                       tags$h3("Sale Price of Each State Based on the Given Year"),
+                                       tags$param("The same data as shown is represented in term of bar plots to provide a better 
+                                                  Proportional comparison between the states in the given year. The texts labeled on the graph
+                                                  are the actual average value from the dataset."),
                                        tags$div(class="card-panel light-blue lighten-5", 
-                                                plotOutput("mapBarPlot")
-                                       )
+                                                plotOutput("mapBarPlot"))
                               )
                             )
                      )
@@ -129,9 +172,12 @@ my_ui <- fluidPage(
           tabPanel("City Box Plot",
                    fluidRow(
                      column(10, 
+                            tags$p("This graph displays the mean sale of homes in the selected state within the selected years.
+                                  We chose to use a boxplot because it helps show all averages (mean, median, minimum, maximum)."),
                             tags$div(class="card-panel teal accent-1", 
                                      plotOutput("cityBoxplot")
-                                     )
+                                     ),
+                            tags$h5("When the plot is blank, it means that the data from that state is missing.")
                      ),
                      column(2, 
                             div(class = "card-panel grey darken-3",
@@ -152,44 +198,57 @@ my_ui <- fluidPage(
         class="card-content col s12 deep-purple",
         h3("Home Rent Prices Trends"),
         tabsetPanel(
-          tabPanel("monthly trend",
+          tabPanel("Rental Price Bar Plot",
                    fluidRow(
                      column(2,
                             div(class = "card-panel grey darken-3",
-                              h4("Plot 1"),
                               selectInput('bState', label = "Choose a state", choices = sales$stateName, selected = NULL),
                               uiOutput("stateCities")
                             )
                      ),
                      column(10,
+                            h4("Monthly Rental Price Bar plot in a Given State and city"),
+                            tags$param("Each bar represents the rental price in the month labeled on the X-axis in the given city. This plot can 
+                                         be used to indicate the trend of the rental price very well and represent any rental price trend in each year"),
                             tags$div(class="card-panel  pink lighten-5", 
-                                     plotOutput('plot')
-                            )
-                     )
-                   )
-          ),
-          tabPanel("random table",
-                   fluidRow(
-                     column(2,
-                            wellPanel(
-                              h4("Plot 2"),
-                              selectInput('month', label = "Choose a month", choices = colnames(sales)[4:136]),
-                              sliderInput('minPrice', label = "Choose a price range", min = 0, max = 1e+06, value = c(min, max))
-                            )
-                     ),
-                     column(10,
-                            div(class = "container", 
-                                dataTableOutput('cityData')
+                                     plotOutput('plot')),
+                            h4("Monthly Sale Price Bar plot in a Given State and city"),
+                            tags$param("Each bar represents the sale price in the month labeled on the X-axis in the given city. This plot can 
+                                         be used to indicate the trend of the sale price very well and represent any sale price trend in each year"),
+                            tags$div(plotOutput('citySales'))
                             )
                      )
                    )
           )
-        )
-        )
+        ),
+      
       ## <<<<<< Second Page <<<<<<
       
+      ## >>>>>> Summary Page >>>>>
+      div(
+        id = "summary", # readme page
+        class="card-content col s12 orange",
+        includeMarkdown("markdown/conclusion.md")
+        #includeMarkdown("../markdown/conclusion.md")
+        ######### === INSERT your README stuff ====
+        # tabsetPanel(
+        #   tabPanel("Home",
+        #            fluidRow(
+        #              column(7, includeMarkdown("~/info201/final-project/markdown/welcome.md"))
+        #            )
+        #   ), 
+        #   
+        #   tabPanel("Conclusion",
+        #            fluidRow(
+        #              column(7, includeMarkdown("~/info201/final-project/markdown/conclusion.md"))
+        #            )
+        #   )
+        # )
+      )
+  ),
+      ## <<<<<< Summary Page <<<<<<
+      
 # >>>>>>> 536f1edd8b9d63aad1c8f56e622be389c19dcc5f
-      ),
   
   ## >>>>>> Footer >>>>>
   hr(),
@@ -202,3 +261,119 @@ my_ui <- fluidPage(
   ## <<<<<< Footer <<<<<<
   tags$script(type="text/javascript", src="init.js")
 )
+
+# my_ui <- navbarPage(fluid = T, "Zillow Housing Data",
+#                     theme = shinythemes::shinytheme("superhero"),
+#                   # sliderInput("year", "Year:",
+#   #             min = "2008", max = "2019",
+#   #             value = "2018")
+#   
+#   # sidebarLayout(
+#     # 
+#     # sidebarPanel(
+#     #   ## If anyone of you wnat to put in global user-controled input, or 
+#     #   ## variable text that will always show to user, put it here.
+#     # ),
+#     #)
+#   tabPanel("Home",
+#            fluidRow(
+#              column(7, includeMarkdown("~/info201/final-project/markdown/welcome.md"))
+#            )
+#   ), 
+#   
+#   tabPanel("Conclusion",
+#            fluidRow(
+#              column(7, includeMarkdown("~/info201/final-project/markdown/conclusion.md"))
+#            )
+#   ),
+#   tabPanel("Component 1",
+#     tabsetPanel(
+#       tabPanel("mapPlot and mapBarPlot",
+#                fluidRow(
+#                  column(2, #offset = 1,
+#                         wellPanel(selectInput("year",
+#                                               "Year:",
+#                                               choices = listOfYears),
+#                         tags$p("mapBarPlot graph displays the mean sale of homes within the selected states within the select year. We chose to use bar graphs because they clearly show pricing trends. 
+#                       mapPlot graph displays the mean sale of homes within all states within the select year.
+#                         We chose to use a map plot to clearly show differential colors and incomes between states.")
+#                     
+#                         
+#                         )
+#                  ),
+#                  column(10, 
+#                         tabsetPanel(
+#                           tabPanel("mapBarPlot", plotOutput("mapBarPlot")),
+#                           tabPanel("mapPlot", plotOutput("mapPlot"))
+#                         )
+#                  )
+# 
+#                  # column(6, plotOutput("mapBarPlot")),
+#                  # column(4, plotOutput("mapPlot"))
+#                )
+#       ),
+#       tabPanel("cityBoxplot",
+#                fluidRow(
+#                  column(10, plotOutput("cityBoxplot")),
+#                  column(2,
+#                         wellPanel(
+#                           selectInput("state", "State:", choices = listOfStates),
+#                           checkboxGroupInput("bYear", "Year:", choices = listOfYears,
+#                                              selected = listOfYears),
+#                           tags$p("This graph displays the mean sale of homes in the selected state within the selected years.
+#                     We chose to use a boxplot because it helps show all averages (mean, median, minimum, maximum).")
+#                           
+#                         )
+#                  )
+#                )
+#       )
+#     )
+#   ),
+#   
+#   tabPanel("Component 2",
+#            titlePanel("Home Rent Prices"),
+#            tabsetPanel(
+#              tabPanel("monthly trend",
+#                       fluidRow(
+#                         column(2,
+#                                wellPanel(
+#                                  h3("Plot 1"),
+#                                  selectInput('bState', label = "Choose a state", choices = sales$stateName, selected = NULL),
+#                                  uiOutput("stateCities")
+#                                  
+#                                )
+#                               ),
+#                         column(10,
+#                                plotOutput('plot')
+#                                )
+#                         )
+#                       ),
+#              tabPanel("random table",
+#                       fluidRow(
+#                         column(2,
+#                                wellPanel(
+#                                  h3("Plot 2"),
+#                                  selectInput('month', label = "Choose a month", choices = colnames(sales)[4:136]),
+#                                  sliderInput('minPrice', label = "Choose a price range", min = 0, max = 1e+06, value = c(min, max))
+#                                  )
+#                                ),
+#                         column(10,
+#                                tableOutput('cityData')
+#                                )
+#                         )
+#                       )
+#            )
+#   ),
+#   hr(),
+#   div(
+#     br(),
+#     eval(parse(text = inputCreditedPeople(creditedPeople)))
+#   )
+# )
+# 
+# 
+# 
+# 
+# 
+shinyUI(my_ui)
+# >>>>>>> 85e18180778b1d4ab2ba95bf68e22735d393ed3f
