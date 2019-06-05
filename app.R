@@ -3,11 +3,13 @@ library("dplyr")
 
 # 
 # 
+
 source("./app/server.R")
+source("./app/ui.R")
 
 # source("./app/debug_server.R")
 
-source("./app/ui.R")
+# source("./app/debug_ui.R")
 
 # source("./app/plot.R")
 
