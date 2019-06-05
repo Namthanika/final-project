@@ -31,7 +31,10 @@ listOfYears <- c("2008", "2009", "2010", "2011", "2012", "2013",
 my_ui <- fluidPage(
   titlePanel("Housing Rate Shiny App"), 
   theme = shinythemes::shinytheme("superhero"),
-  
+  tags$style(type="text/css",
+             ".shiny-output-error { visibility: hidden; }",
+             ".shiny-output-error:before { visibility: hidden; }"
+  ),
   tags$head(
     tags$link(rel = "stylesheet", type = "text/css", href = "https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"),
     tags$script(src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js")
