@@ -42,17 +42,17 @@ year_state_ave <- monthly_state_ave %>% group_by(stateName, year) %>% summarise(
 # state_abbr_table <- read.csv("../data/states.csv", stringsAsFactors = FALSE)
 
 state_abbr_table <- state_abbr_table %>% mutate(lower_state_name = tolower(State))
-year_state_ave <- inner_join(year_state_ave, state_abbr_table, by = c("stateName" = "Abbreviation"))
-mapping_table <- inner_join(year_state_ave, us_map, by = c("lower_state_name" = "id"))
+year_state_ave <- full_join(year_state_ave, state_abbr_table, by = c("stateName" = "Abbreviation"))
+mapping_table <- full_join(year_state_ave, us_map, by = c("lower_state_name" = "id"))
 
-# ## given a year to look at 
-# data_2018 <- filter(mapping_table, year == 2019) %>% filter(!is.nan(mean))
+# ## given a year to look at
+# data_2018 <- filter(mapping_table, year == 2019 | is.na(year))
 # 
 # ggplot(data = data_2018,
 #        aes(x = long, y = lat)) +
 #   geom_polygon(aes(group = group, fill = mean), size = 0.1) +
-#   scale_fill_gradient(low = "blue", high = "yellow") 
-# 
+#   scale_fill_gradient(low = "blue", high = "yellow")
+
 # ## given at state, to see the trend of the price over the past years 
 # monthy_city_ave <- monthly_state_ave %>% group_by(year, cityName, stateName) %>% summarise(mean = mean(value))
 # state_data <- filter(monthy_city_ave, stateName == "CA")
@@ -60,4 +60,9 @@ mapping_table <- inner_join(year_state_ave, us_map, by = c("lower_state_name" = 
 # p1 <- ggplot(state_data, aes(x = year, y = mean, fill = year))
 # p1 +
 #   geom_boxplot(outlier.colour="black", outlier.shape=16,
-#                outlier.size=2)
+#                outlier.size=2) + scale_fill_gradient2(low='red', mid='snow3', high='darkgreen', space='Lab')
+year_price <- year_state_ave %>% filter(stateName == '-' & is.na(State))
+ggplot(data=year_price, aes(x=year, y=mean, group=1)) + 
+  geom_line(colour="red", linetype="solid", size=1.5) + 
+  geom_label(aes(label = round(mean)), size = 2.5) +
+  theme_dark() 

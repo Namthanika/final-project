@@ -41,17 +41,36 @@ x_axis_filter <- exp_months[threes, ]
 
 ### ======== Server Envi ========
 my_server <- function(input, output) {
-  ## given a year to look at
+  ## first tab:: national level
+  output$year_price_plot <- renderPlot({
+    year_price <- year_state_ave %>% filter(stateName == '-' & is.na(State))
+    ggplot(data=year_price, aes(x=year, y=mean, group=1)) + 
+      geom_line(colour="red", linetype="solid", size=1.5) + 
+      geom_label(aes(label = round(mean))) +
+      theme_dark() 
+  })
+  
+  output$year_plot_explanation <- renderText({
+    
+    paste("The plot represents the average housing price in each year from 2008 to 2019. The data is collected by Zillow. 
+          It only includes the data from cities in a state. The number of the states is not consistant throughout years.
+          The earlier years has less number of states collected in the data set. Since the size of dataset is not consistent throughout the years, 
+          The average can be overestimated or underestimated. However, the plot displays the trend of the housing prices 
+          from 2008 to 2019 very well. As expected, after the economy has been a lot better after 2012, the trend of housing price 
+          also gradually increases in those years.")
+  })
+  
+  ## second tab:: state level 
   get_summarized_data <- reactive({
-    filter(mapping_table, year == input$year) %>% filter(!is.nan(mean))
+    filter(mapping_table, year == input$year | is.na(year))#%>% filter(!is.nan(mean))
   })
   
   barplot_data <- reactive({
-    filter(year_state_ave, year == input$year) %>% filter(!is.nan(mean)) %>% arrange(mean)
+    filter(year_state_ave, year == input$year) %>% arrange(mean)
   })
   
   box_plot_data <- reactive({
-    state_data <- filter(monthy_city_ave, stateName == input$state, year %in% input$bYear) %>% filter(!is.nan(mean))
+    state_data <- filter(monthy_city_ave, stateName == input$state, year %in% input$bYear) #%>% filter(!is.nan(mean))
   })
   
   output$mapPlot <- renderPlot({
@@ -69,11 +88,16 @@ my_server <- function(input, output) {
                                         size = 2, linetype = "solid"))
   })
   
+  output$mapText <- renderText({
+    paste("The grey states indicate that the data from the states are missing.")
+  })
+  
   output$mapBarPlot <- renderPlot({
     data <- barplot_data()
     ggplot(data=data, aes(x=State, y=mean)) +
       geom_bar(aes(fill = mean) ,stat="identity") + 
-      geom_text(aes(label=round(mean)), color="white", size=3.5) + 
+     # scale_fill_gradient2(low='red', high='darkgreen', space='Lab') +
+      geom_text(aes(label=round(mean)), color="white", size=3.5) +
       coord_flip() + theme_dark() 
   })
 
@@ -91,6 +115,8 @@ my_server <- function(input, output) {
       geom_boxplot(outlier.colour="red", outlier.shape=8,outlier.size=4) + theme_dark() 
   })
   
+  ## third tab::city level
+  
   ### ----------- Third and Fourth graph begin --------
   sales_statedata <- reactive({
     return(sales_state(input$bState))
@@ -103,11 +129,11 @@ my_server <- function(input, output) {
   
   sales_citydata <- reactive({
     sales_city <- filter(sales_statedata(), cityName == input$city)
-    return(sales_city)
   })
   
   output$cityData <- renderTable({
-    return(sales_citydata())
+    data <- sales_citydata()
+    melt(data, id=c("RegionID","RegionName","SizeRank", "cityName", "stateName"))
   })
   
   cityPrices <- reactive({

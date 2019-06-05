@@ -45,6 +45,9 @@ my_ui <- navbarPage(fluid = T, "Housing Rate Shiny App",
     # ),
     #)
   
+  tabPanel("Overview", 
+           plotOutput('year_price_plot'), textOutput('year_plot_explanation')),
+  
   tabPanel("Component 1",
     tabsetPanel(
       tabPanel("mapPlot and mapBarPlot",
@@ -62,7 +65,7 @@ my_ui <- navbarPage(fluid = T, "Housing Rate Shiny App",
                                             plotOutput("mapBarPlot")
                                             )
                                    ),
-                          tabPanel("mapPlot", plotOutput("mapPlot"))
+                          tabPanel("mapPlot", plotOutput("mapPlot"), textOutput("mapText"))
                         )
                  )
 
