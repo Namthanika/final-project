@@ -59,7 +59,12 @@ my_ui <- navbarPage(fluid = T, "Zillow Housing Data",
                  column(2, #offset = 1,
                         wellPanel(selectInput("year",
                                               "Year:",
-                                              choices = listOfYears)
+                                              choices = listOfYears),
+                        tags$p("mapBarPlot graph displays the mean sale of homes within the selected states within the select year. We chose to use bar graphs because they clearly show pricing trends. 
+                      mapPlot graph displays the mean sale of homes within all states within the select year.
+                        We chose to use a map plot to clearly show differential colors and incomes between states.")
+                    
+                        
                         )
                  ),
                  column(10, 
@@ -80,7 +85,10 @@ my_ui <- navbarPage(fluid = T, "Zillow Housing Data",
                         wellPanel(
                           selectInput("state", "State:", choices = listOfStates),
                           checkboxGroupInput("bYear", "Year:", choices = listOfYears,
-                                             selected = listOfYears)
+                                             selected = listOfYears),
+                          tags$p("This graph displays the mean sale of homes in the selected state within the selected years.
+                    We chose to use a boxplot because it helps show all averages (mean, median, minimum, maximum).")
+                          
                         )
                  )
                )
@@ -98,6 +106,7 @@ my_ui <- navbarPage(fluid = T, "Zillow Housing Data",
                                  h3("Plot 1"),
                                  selectInput('bState', label = "Choose a state", choices = sales$stateName, selected = NULL),
                                  uiOutput("stateCities")
+                                 
                                )
                               ),
                         column(10,
