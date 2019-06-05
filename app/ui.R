@@ -30,7 +30,7 @@ listOfYears <- c("2008", "2009", "2010", "2011", "2012", "2013",
 ## ======= Actual Shiny UI ======
 my_ui <- navbarPage(fluid = T, "Zillow Housing Data",
                     theme = shinythemes::shinytheme("superhero"),
-  # sliderInput("year", "Year:",
+                  # sliderInput("year", "Year:",
   #             min = "2008", max = "2019",
   #             value = "2018")
   
@@ -43,10 +43,15 @@ my_ui <- navbarPage(fluid = T, "Zillow Housing Data",
     #)
   tabPanel("Home",
            fluidRow(
-             jpeg
              column(7, includeMarkdown("~/info201/final-project/markdown/welcome.md"))
            )
   ), 
+  
+  tabPanel("Conclusion",
+           fluidRow(
+             column(7, includeMarkdown("~/info201/final-project/markdown/conclusion.md"))
+           )
+  ),
   tabPanel("Component 1",
     tabsetPanel(
       tabPanel("mapPlot and mapBarPlot",
@@ -121,8 +126,10 @@ my_ui <- navbarPage(fluid = T, "Zillow Housing Data",
     br(),
     eval(parse(text = inputCreditedPeople(creditedPeople)))
   )
-      
-)  
+)
 
-# 
+
+
+
+
 # shinyUI(my_ui)

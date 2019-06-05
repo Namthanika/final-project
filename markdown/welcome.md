@@ -43,13 +43,13 @@ from each team member and implemented them.
 We used several R libraries to help format the application and wrangle the data:
 
 * **tidyverse** - set of packages that work in harmony because they share common
-data representations and 'API' design.
+data representations and 'API' design
 * **dplyr** - shortcuts for subsetting, summarizing, rearranging, and joining together
-data sets.
-* **shiny** - Easily make interactive web apps with R.
+data sets
+* **shiny** - Easily make interactive web apps with R
 * **leaflet** - create and display maps, helps the implementation of the map visualizations
-* **ggplot2** - lets you use the grammar of graphics to build layered, customizable plots.
-* **R.utils** - utility functions useful when programming and developing R packages.
-* **viridis** - use the color scales to make plots to better represent your data.
+* **ggplot2** - lets you use the grammar of graphics to build layered, customizable plots
+* **R.utils** - utility functions useful when programming and developing R packages
+* **viridis** - use the color scales to make plots to better represent your data
 * **reshape** - restructure and aggregate the data
-* **fiftystater** - map data to visualize the fifty U.S. states.
+* **fiftystater** - map data to visualize the fifty U.S. states
