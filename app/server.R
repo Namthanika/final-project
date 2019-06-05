@@ -36,7 +36,7 @@ exp_citydata <- sales_city(sales_state("NY"), "New York")
 ## <!!!\> Explain 4:136  </!!!>
 exp_months <- data.frame(month = colnames(exp_citydata)[4:136], stringsAsFactors = F)
 threes <- seq(3, nrow(exp_months), 3)
-x_axis_filter <- exp_months[threes, ]
+#x_axis_filter <- exp_months[threes, ]
 
 
 ### ======== Server Envi ========
@@ -87,8 +87,8 @@ my_server <- function(input, output) {
         panel.grid.minor = element_blank(), 
         panel.background = element_rect(fill = "#BFD5E3", colour = "#6D9EC1",
                                         size = 2, linetype = "solid"),
-        legend.background = element_rect(fill = "transparent",colour = NA),
-        plot.background = element_rect(fill = "transparent",colour = NA)
+        # legend.background = element_rect(fill = "transparent",colour = NA),
+        # plot.background = element_rect(fill = "transparent",colour = NA)
         )
   }, bg="transparent")
   
@@ -106,8 +106,8 @@ my_server <- function(input, output) {
       coord_flip() + theme_dark()+theme(
         # panel.background = element_rect(fill = "transparent",colour = NA)
         # ,
-        legend.background = element_rect(fill = "transparent",colour = NA),
-        plot.background = element_rect(fill = "transparent",colour = NA)
+        # legend.background = element_rect(fill = "transparent",colour = NA),
+        # plot.background = element_rect(fill = "transparent",colour = NA)
       )
   }, bg="transparent")
 
@@ -124,11 +124,11 @@ my_server <- function(input, output) {
    ggplot(box_plot_data(), aes(x = year, y = mean, fill = year)) + 
 
       geom_boxplot(outlier.colour="red", outlier.shape=8,outlier.size=4) + 
-      theme_dark() + 
-      theme(legend.background = element_rect(fill = "transparent",colour = NA),
-            plot.background = element_rect(fill = "transparent",colour = NA)
-            )
-  }, bg="transparent")
+      theme_dark()
+      # theme(legend.background = element_rect(fill = "transparent",colour = NA),
+      #       plot.background = element_rect(fill = "transparent",colour = NA)
+      #       )
+  })#, bg="transparent")
   
   # output$citySales <- renderPlot({
   #   data <- sales_citydata1
@@ -182,9 +182,9 @@ my_server <- function(input, output) {
       scale_y_continuous(labels = scales::comma) +
       geom_bar(stat = "identity", fill = "steelblue") +
       scale_x_discrete(breaks = x_axis_filter) + # this only works for fixed-X-length
-      theme(axis.text.x = element_text(angle = 75, hjust = 1),
-            plot.background = element_rect(fill = "transparent",colour = NA))
-  }, bg="transparent")
+      theme(axis.text.x = element_text(angle = 75, hjust = 1))
+        #    plot.background = element_rect(fill = "transparent",colour = NA))
+  })
   
   sales_statedata1 <- reactive({
     filter(unpivot_sales, stateName == input$bState)
@@ -201,8 +201,8 @@ my_server <- function(input, output) {
       scale_y_continuous(labels = scales::comma) +
       geom_bar(stat = "identity", fill = "steelblue") +
       scale_x_discrete(breaks = x_axis_filter) + # this only works for fixed-X-length
-      theme(axis.text.x = element_text(angle = 75, hjust = 1),
-            plot.background = element_rect(fill = "transparent",colour = NA))
+      theme(axis.text.x = element_text(angle = 75, hjust = 1))
+       #     plot.background = element_rect(fill = "transparent",colour = NA))
   })
   ### ----------- Third and Fourth graph ends --------
 
