@@ -1,5 +1,22 @@
-source("./app/project.R")
-#source("project.R")
+source("./app/initialization.R")
+
+## provide functions
+sales_state <- function(state) {
+  sales_statename <- filter(sales, stateName == state)
+  return(sales_statename)
+}
+
+getCities <- function(state) {
+  sales_statedata <- sales_state(state)
+  return(sales_statedata$cityName)
+}
+
+sales_city <- function(table, city) {
+  sales_cityname <- filter(table, cityName == city)
+  return(sales_cityname)
+}
+
+
 # to get a table containg the full state name and its abbrevaition
 us_map <- fifty_states
 
@@ -37,5 +54,4 @@ year_state_ave <- monthly_state_ave %>% group_by(stateName, year) %>% summarise(
 state_abbr_table <- state_abbr_table %>% mutate(lower_state_name = tolower(State))
 year_state_ave <- full_join(year_state_ave, state_abbr_table, by = c("stateName" = "Abbreviation"))
 mapping_table <- full_join(year_state_ave, us_map, by = c("lower_state_name" = "id"))
-
 

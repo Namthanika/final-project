@@ -29,3 +29,5 @@ The major challenges that we anticipated are:
 * Since we require to reformat some of data, we need to be careful on not changing the raw dataset.
 * In order to use the provided R packages effectively, we need to make sure that our data is in the format that can utilize the packages smoothly.
 * Working in a team can be hard. Thus, breaking the structure of the project needs to be done deliberately. Making sure that there won’t be any conflict in implementation.
+
+Url to the page: [https://thanika.shinyapps.io/final-project/](https://thanika.shinyapps.io/final-project/)

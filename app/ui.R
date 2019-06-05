@@ -1,7 +1,3 @@
-library(shiny)
-library(leaflet)
-library(ggplot2)
-library(shinythemes)
 creditedPeople <- c("Thanika Painruttanasukho", "Nathan Truong Nguyen", "Abishek Hariharan", "Yijie Deng")
 
 inputCreditedPeople <- function(creditedPeople) {
@@ -220,5 +216,3 @@ my_ui <- fluidPage(
   ## <<<<<< Footer <<<<<<
   tags$script(type="text/javascript", src="init.js")
 )
-
-shinyUI(my_ui)
