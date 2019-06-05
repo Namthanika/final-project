@@ -85,8 +85,11 @@ my_server <- function(input, output) {
         panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(), 
         panel.background = element_rect(fill = "#BFD5E3", colour = "#6D9EC1",
-                                        size = 2, linetype = "solid"))
-  })
+                                        size = 2, linetype = "solid"),
+        legend.background = element_rect(fill = "transparent",colour = NA),
+        plot.background = element_rect(fill = "transparent",colour = NA)
+        )
+  }, bg="transparent")
   
   output$mapText <- renderText({
     paste("The grey states indicate that the data from the states are missing.")
@@ -96,10 +99,14 @@ my_server <- function(input, output) {
     data <- barplot_data()
     ggplot(data=data, aes(x=State, y=mean)) +
       geom_bar(aes(fill = mean) ,stat="identity") + 
-     # scale_fill_gradient2(low='red', high='darkgreen', space='Lab') +
-      geom_text(aes(label=round(mean)), color="white", size=3.5) +
-      coord_flip() + theme_dark() 
-  })
+      geom_text(aes(label=round(mean)), color="white", size=3.5) + 
+      coord_flip() + theme_dark()+theme(
+        # panel.background = element_rect(fill = "transparent",colour = NA)
+        # ,
+        legend.background = element_rect(fill = "transparent",colour = NA),
+        plot.background = element_rect(fill = "transparent",colour = NA)
+      )
+  }, bg="transparent")
 
   # ggplot(data = filter_date,
   #        aes(x = long, y = lat)) +
@@ -112,8 +119,12 @@ my_server <- function(input, output) {
 
   output$cityBoxplot <- renderPlot({
    ggplot(box_plot_data(), aes(x = year, y = mean, fill = year)) + 
-      geom_boxplot(outlier.colour="red", outlier.shape=8,outlier.size=4) + theme_dark() 
-  })
+      geom_boxplot(outlier.colour="red", outlier.shape=8,outlier.size=4) + 
+      theme_dark() + 
+      theme(legend.background = element_rect(fill = "transparent",colour = NA),
+            plot.background = element_rect(fill = "transparent",colour = NA)
+            )
+  }, bg="transparent")
   
   ## third tab::city level
   
@@ -131,9 +142,8 @@ my_server <- function(input, output) {
     sales_city <- filter(sales_statedata(), cityName == input$city)
   })
   
-  output$cityData <- renderTable({
-    data <- sales_citydata()
-    melt(data, id=c("RegionID","RegionName","SizeRank", "cityName", "stateName"))
+  output$cityData <- renderDataTable({
+    return(sales_citydata())
   })
   
   cityPrices <- reactive({
@@ -151,8 +161,9 @@ my_server <- function(input, output) {
     ggplot(data = data, aes(x = month, y = price)) +
       geom_bar(stat = "identity", fill = "steelblue") +
       scale_x_discrete(breaks = x_axis_filter) + # this only works for fixed-X-length
-      theme(axis.text.x = element_text(angle = 75, hjust = 1))
-  })
+      theme(axis.text.x = element_text(angle = 75, hjust = 1), 
+            plot.background = element_rect(fill = "transparent",colour = NA))
+  }, bg="transparent")
   ### ----------- Third and Fourth graph ends --------
   
 }
