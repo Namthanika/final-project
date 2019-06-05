@@ -1,7 +1,3 @@
-library("dplyr")
-library("reshape")
-library(fiftystater)
-
 source("./app/project.R")
 #source("project.R")
 # to get a table containg the full state name and its abbrevaition
@@ -69,6 +65,31 @@ mapping_table <- full_join(year_state_ave, us_map, by = c("lower_state_name" = "
 #   theme_dark() 
 
 # given a year 
+
+
+sales_state <- function(state) {
+  sales_statename <- filter(sales, stateName == state)
+  return(sales_statename)
+}
+
+getCities <- function(state) {
+  sales_statedata <- sales_state(state)
+  return(sales_statedata$cityName)
+}
+
+sales_city <- function(table, city) {
+  sales_cityname <- filter(table, cityName == city)
+  return(sales_cityname)
+}
+
+
+exp_citydata <- sales_city(sales_state("NY"), "New York")
+## <!!!\> Explain 4:136  </!!!>
+exp_months <- data.frame(month = colnames(exp_citydata)[4:136], stringsAsFactors = F)
+threes <- seq(3, nrow(exp_months), 3)
+x_axis_filter <- exp_months[threes, ]
+
+
 data <- unpivot_sales %>% filter(stateName == "NY", cityName == "New York") 
 ggplot(data = data, aes(x = variable, y = value)) +
   scale_y_continuous(labels = scales::comma) +

@@ -1,4 +1,14 @@
 # install new packages if needed otherwise just call library("package name")
+library("dplyr")
+library("reshape")
+library(fiftystater)
+library(shiny)
+library(leaflet)
+library(ggplot2)
+library(R.utils)
+library(viridis)
+library("tidyverse")
+
 download_and_load_packages <- function(required_packages) {
     repo <- "http://cran.us.r-project.org"
     for (package in required_packages) {

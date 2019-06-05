@@ -29,6 +29,7 @@ sales_city <- function(table, city) {
 
 exp_citydata <- sales_city(sales_state("NY"), "New York")
 ## <!!!\> Explain 4:136  </!!!>
+
 exp_months <- data.frame(month = colnames(exp_citydata)[4:136], stringsAsFactors = F)
 threes <- seq(3, nrow(exp_months), 3)
 x_axis_filter <- exp_months[threes, ]
