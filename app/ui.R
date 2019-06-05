@@ -40,35 +40,6 @@ my_ui <- fluidPage(
     tags$script(src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js")
     ),
   
-# <<<<<<< HEAD
-#   tabPanel("Overview", 
-#            plotOutput('year_price_plot'), textOutput('year_plot_explanation')),
-#   
-#   tabPanel("Component 1",
-#     tabsetPanel(
-#       tabPanel("mapPlot and mapBarPlot",
-#                fluidRow(
-#                  column(2, #offset = 1,
-#                         wellPanel(selectInput("year",
-#                                               "Year:",
-#                                               choices = listOfYears)
-#                         )
-#                  ),
-#                  column(10, 
-#                         tabsetPanel(
-#                           tabPanel("mapBarPlot", 
-#                                    tags$div(class="card-panel teal lighten-2", 
-#                                             plotOutput("mapBarPlot")
-#                                             )
-#                                    ),
-#                           tabPanel("mapPlot", plotOutput("mapPlot"), textOutput("mapText"))
-#                         )
-#                  )
-# 
-#                  # column(6, plotOutput("mapBarPlot")),
-#                  # column(4, plotOutput("mapPlot"))
-#                )
-# =======
   ## ==== Tab Structure ====
   div(class = "card",
       
@@ -103,7 +74,6 @@ my_ui <- fluidPage(
         id = "readme", # readme page
         class="card-content col s12 orange",
         includeMarkdown("markdown/welcome.md")
-        #includeMarkdown("../markdown/welcome.md")
       ),
       ## <<<<<< Readme Page <<<<<<
       
@@ -125,25 +95,10 @@ my_ui <- fluidPage(
           also gradually increases in those years.")
             )
           )
-        
-        ######### === INSERT your README stuff ====
-        # tabsetPanel(
-        #   tabPanel("Home",
-        #            fluidRow(
-        #              column(7, includeMarkdown("~/info201/final-project/markdown/welcome.md"))
-        #            )
-        #   ), 
-        #   
-        #   tabPanel("Conclusion",
-        #            fluidRow(
-        #              column(7, includeMarkdown("~/info201/final-project/markdown/conclusion.md"))
-        #            )
-        #   )
-        # )
       ),
       ## <<<<<< Nation Level Page <<<<<<
       
-      ## >>>>>> First Page >>>>>
+      ## >>>>>> State Level Page >>>>>
       div(
         id = "page-1", # first page
         class="card-content col s12 blue",
@@ -200,9 +155,9 @@ my_ui <- fluidPage(
                    )
           )
         ),
-      ## <<<<<< First Page <<<<<<
+      ## <<<<<< State level page <<<<<<
       
-      ## >>>>>> Seconde Page >>>>>
+      ## >>>>>> city level page >>>>>
       div(
         id = "page-2", # second page
         class="card-content col s12 deep-purple",
@@ -225,20 +180,10 @@ my_ui <- fluidPage(
                                              be used to indicate the trend of the rental price very well and represent any rental price trend in each year"),
                                 tags$div(class="card-panel pink lighten-5", 
                                          plotOutput('plot'))
-                                # h4("Monthly Sale Price Bar plot in a Given State and city"),
-                                # tags$param("Each bar represents the sale price in the month labeled on the X-axis in the given city. This plot can 
-                                #              be used to indicate the trend of the sale price very well and represent any sale price trend in each year"),
-                                # tags$div(class="card-panel pink lighten-5",
-                                #          plotOutput('citySales'))
                               ),
                               tabsetPanel(
                                 tabPanel("->"),
                                 tabPanel(
-                                  # h4("Monthly Rental Price Bar plot in a Given State and city"),
-                                  # tags$param("Each bar represents the rental price in the month labeled on the X-axis in the given city. This plot can 
-                                  #            be used to indicate the trend of the rental price very well and represent any rental price trend in each year"),
-                                  # tags$div(class="card-panel pink lighten-5", 
-                                  #          plotOutput('plot')),
                                   h4("Monthly Sale Price Bar plot in a Given State and city"),
                                   tags$param("Each bar represents the sale price in the month labeled on the X-axis in the given city. This plot can 
                                              be used to indicate the trend of the sale price very well and represent any sale price trend in each year"),
@@ -253,33 +198,16 @@ my_ui <- fluidPage(
           )
         ),
       
-      ## <<<<<< Second Page <<<<<<
+      ## <<<<<< city level page <<<<<<
       
       ## >>>>>> Summary Page >>>>>
       div(
         id = "summary", # readme page
         class="card-content col s12 orange",
         includeMarkdown("markdown/conclusion.md")
-        #includeMarkdown("../markdown/conclusion.md")
-        ######### === INSERT your README stuff ====
-        # tabsetPanel(
-        #   tabPanel("Home",
-        #            fluidRow(
-        #              column(7, includeMarkdown("~/info201/final-project/markdown/welcome.md"))
-        #            )
-        #   ), 
-        #   
-        #   tabPanel("Conclusion",
-        #            fluidRow(
-        #              column(7, includeMarkdown("~/info201/final-project/markdown/conclusion.md"))
-        #            )
-        #   )
-        # )
       )
   ),
       ## <<<<<< Summary Page <<<<<<
-      
-# >>>>>>> 536f1edd8b9d63aad1c8f56e622be389c19dcc5f
   
   ## >>>>>> Footer >>>>>
   hr(),
@@ -293,118 +221,4 @@ my_ui <- fluidPage(
   tags$script(type="text/javascript", src="init.js")
 )
 
-# my_ui <- navbarPage(fluid = T, "Zillow Housing Data",
-#                     theme = shinythemes::shinytheme("superhero"),
-#                   # sliderInput("year", "Year:",
-#   #             min = "2008", max = "2019",
-#   #             value = "2018")
-#   
-#   # sidebarLayout(
-#     # 
-#     # sidebarPanel(
-#     #   ## If anyone of you wnat to put in global user-controled input, or 
-#     #   ## variable text that will always show to user, put it here.
-#     # ),
-#     #)
-#   tabPanel("Home",
-#            fluidRow(
-#              column(7, includeMarkdown("~/info201/final-project/markdown/welcome.md"))
-#            )
-#   ), 
-#   
-#   tabPanel("Conclusion",
-#            fluidRow(
-#              column(7, includeMarkdown("~/info201/final-project/markdown/conclusion.md"))
-#            )
-#   ),
-#   tabPanel("Component 1",
-#     tabsetPanel(
-#       tabPanel("mapPlot and mapBarPlot",
-#                fluidRow(
-#                  column(2, #offset = 1,
-#                         wellPanel(selectInput("year",
-#                                               "Year:",
-#                                               choices = listOfYears),
-#                         tags$p("mapBarPlot graph displays the mean sale of homes within the selected states within the select year. We chose to use bar graphs because they clearly show pricing trends. 
-#                       mapPlot graph displays the mean sale of homes within all states within the select year.
-#                         We chose to use a map plot to clearly show differential colors and incomes between states.")
-#                     
-#                         
-#                         )
-#                  ),
-#                  column(10, 
-#                         tabsetPanel(
-#                           tabPanel("mapBarPlot", plotOutput("mapBarPlot")),
-#                           tabPanel("mapPlot", plotOutput("mapPlot"))
-#                         )
-#                  )
-# 
-#                  # column(6, plotOutput("mapBarPlot")),
-#                  # column(4, plotOutput("mapPlot"))
-#                )
-#       ),
-#       tabPanel("cityBoxplot",
-#                fluidRow(
-#                  column(10, plotOutput("cityBoxplot")),
-#                  column(2,
-#                         wellPanel(
-#                           selectInput("state", "State:", choices = listOfStates),
-#                           checkboxGroupInput("bYear", "Year:", choices = listOfYears,
-#                                              selected = listOfYears),
-#                           tags$p("This graph displays the mean sale of homes in the selected state within the selected years.
-#                     We chose to use a boxplot because it helps show all averages (mean, median, minimum, maximum).")
-#                           
-#                         )
-#                  )
-#                )
-#       )
-#     )
-#   ),
-#   
-#   tabPanel("Component 2",
-#            titlePanel("Home Rent Prices"),
-#            tabsetPanel(
-#              tabPanel("monthly trend",
-#                       fluidRow(
-#                         column(2,
-#                                wellPanel(
-#                                  h3("Plot 1"),
-#                                  selectInput('bState', label = "Choose a state", choices = sales$stateName, selected = NULL),
-#                                  uiOutput("stateCities")
-#                                  
-#                                )
-#                               ),
-#                         column(10,
-#                                plotOutput('plot')
-#                                )
-#                         )
-#                       ),
-#              tabPanel("random table",
-#                       fluidRow(
-#                         column(2,
-#                                wellPanel(
-#                                  h3("Plot 2"),
-#                                  selectInput('month', label = "Choose a month", choices = colnames(sales)[4:136]),
-#                                  sliderInput('minPrice', label = "Choose a price range", min = 0, max = 1e+06, value = c(min, max))
-#                                  )
-#                                ),
-#                         column(10,
-#                                tableOutput('cityData')
-#                                )
-#                         )
-#                       )
-#            )
-#   ),
-#   hr(),
-#   div(
-#     br(),
-#     eval(parse(text = inputCreditedPeople(creditedPeople)))
-#   )
-# )
-# 
-# 
-# 
-# 
-# 
 shinyUI(my_ui)
-# >>>>>>> 85e18180778b1d4ab2ba95bf68e22735d393ed3f
